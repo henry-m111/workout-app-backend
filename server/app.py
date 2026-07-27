@@ -50,7 +50,7 @@ def workouts():
 
 @app.route('/workouts/<int:id>', methods=['GET', 'DELETE'])
 def workout_by_id(id):
-    workout = Workout.query.get(id)
+    workout = db.session.get(Workout, id)
     if not workout:
         return jsonify({'error': 'Workout not found'}), 404
 
@@ -95,7 +95,7 @@ def exercises():
 
 @app.route('/exercises/<int:id>', methods=['GET', 'DELETE'])
 def exercise_by_id(id):
-    exercise = Exercise.query.get(id)
+    exercise = db.session.get(Exercise, id)
     if not exercise:
         return jsonify({'error': 'Exercise not found'}), 404
 
@@ -114,8 +114,8 @@ def exercise_by_id(id):
 
 @app.route('/workouts/<int:workout_id>/exercises/<int:exercise_id>/workout_exercises', methods=['POST'])
 def add_exercise_to_workout(workout_id, exercise_id):
-    workout = Workout.query.get(workout_id)
-    exercise = Exercise.query.get(exercise_id)
+    workout = db.session.get(Workout, workout_id)
+    exercise = db.session.get(Exercise, exercise_id)
 
     if not workout or not exercise:
         return jsonify({'error': 'Workout or Exercise not found'}), 404
